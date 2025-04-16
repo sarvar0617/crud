@@ -9,13 +9,14 @@ add.addEventListener("click", () => {
 window.addEventListener("DOMContentLoaded", async () => {
   const users = await fetchData();
   console.log(users);
-  userCard(users);
+  userCard();
   displayUsers(users);
 });
 async function fetchData() {
   const data = await fetch(base_url);
   const res = await data.json();
   displayUsers(res);
+  return res;
 }
 async function postData(data) {
   await fetch(base_url, {
@@ -39,6 +40,7 @@ addBtn.addEventListener("click", () => {
       document.querySelector(".phone").value = "";
       document.querySelector(".name").value = "";
       console.log("Foydalanuvchi qo'shildi!");
+      fetchData();
     })
     .catch((error) => {
       console.error("Xatolik:", error);
