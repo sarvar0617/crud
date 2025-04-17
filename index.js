@@ -109,3 +109,43 @@ async function deleteUser(id) {
   }
 }
 console.log(true);
+
+let editId = null;
+usersWrapper.addEventListener("click", (e) => {
+  if (e.target.classList.contains("change")) {
+    const userCard = e.target.closest(".users");
+    const userId = e.target.previousElementSibling.dataset.id;
+    const name = userCard.querySelector(".name-text").textContent.trim();
+    const phone = userCard.querySelector(".number-text").textContent.trim();
+
+    document.querySelector(".name").value = name;
+    document.querySelector(".phone").value = phone;
+
+    editId = userId;
+    addSection.classList.add("open");
+    addBtn.textContent = "Tahrirlash";
+  }
+});
+
+addBtn.addEventListener("click", () => {
+  const nameInput = document.querySelector(".name");
+  const phoneInput = document.querySelector(".phone");
+
+  const newUser = {
+    name: nameInput.value,
+    phone: phoneInput.value,
+  };
+
+  if (editId) {
+    updateUser(editId, newUser).then(() => {
+      editId = null;
+      addBtn.textContent = "Qo'shish";
+    });
+  } else {
+    postData(newUser);
+  }
+
+  nameInput.value = "";
+  phoneInput.value = "";
+  addSection.classList.remove("open");
+});
